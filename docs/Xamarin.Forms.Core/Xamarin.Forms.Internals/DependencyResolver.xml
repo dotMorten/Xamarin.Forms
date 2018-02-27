@@ -44,7 +44,7 @@
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="resolveFunc" Type="System.Func&lt;System.Type,System.Object&gt;" />
+        <Parameter Name="resolver" Type="System.Func&lt;System.Type,System.Object&gt;" />
       </Parameters>
       <Docs>
         <param name="resolver">To be added.</param>

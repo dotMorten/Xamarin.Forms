@@ -5,20 +5,25 @@ using Xamarin.Forms.Platform;
 
 namespace Xamarin.Forms
 {
-	[RenderWith(typeof(_EntryRenderer))]
-	public class Entry : InputView, IFontElement, ITextElement, ITextAlignmentElement, IEntryController, IElementConfiguration<Entry>
+	[Obsolete("Use TextBlock")]
+	public class Entry : TextBlock, IElementConfiguration<Entry>
 	{
-		public static readonly BindableProperty PlaceholderProperty = BindableProperty.Create("Placeholder", typeof(string), typeof(Entry), default(string));
+	}
 
-		public static readonly BindableProperty IsPasswordProperty = BindableProperty.Create("IsPassword", typeof(bool), typeof(Entry), default(bool));
+	[RenderWith(typeof(_EntryRenderer))]
+	public class TextBlock : InputView, IFontElement, ITextElement, ITextAlignmentElement, IEntryController, IElementConfiguration<TextBlock>
+	{
+		public static readonly BindableProperty PlaceholderProperty = BindableProperty.Create("Placeholder", typeof(string), typeof(TextBlock), default(string));
 
-		public static readonly BindableProperty TextProperty = BindableProperty.Create("Text", typeof(string), typeof(Entry), null, BindingMode.TwoWay, propertyChanged: OnTextChanged);
+		public static readonly BindableProperty IsPasswordProperty = BindableProperty.Create("IsPassword", typeof(bool), typeof(TextBlock), default(bool));
+
+		public static readonly BindableProperty TextProperty = BindableProperty.Create("Text", typeof(string), typeof(TextBlock), null, BindingMode.TwoWay, propertyChanged: OnTextChanged);
 
 		public static readonly BindableProperty TextColorProperty = TextElement.TextColorProperty;
 
 		public static readonly BindableProperty HorizontalTextAlignmentProperty = TextAlignmentElement.HorizontalTextAlignmentProperty;
 
-		public static readonly BindableProperty PlaceholderColorProperty = BindableProperty.Create("PlaceholderColor", typeof(Color), typeof(Entry), Color.Default);
+		public static readonly BindableProperty PlaceholderColorProperty = BindableProperty.Create("PlaceholderColor", typeof(Color), typeof(TextBlock), Color.Default);
 
 		public static readonly BindableProperty FontFamilyProperty = FontElement.FontFamilyProperty;
 
@@ -26,11 +31,11 @@ namespace Xamarin.Forms
 
 		public static readonly BindableProperty FontAttributesProperty = FontElement.FontAttributesProperty;
 
-		readonly Lazy<PlatformConfigurationRegistry<Entry>> _platformConfigurationRegistry;
+		readonly Lazy<PlatformConfigurationRegistry<TextBlock>> _platformConfigurationRegistry;
 
-		public Entry()
+		public TextBlock()
 		{
-			_platformConfigurationRegistry = new Lazy<PlatformConfigurationRegistry<Entry>>(() => new PlatformConfigurationRegistry<Entry>(this));
+			_platformConfigurationRegistry = new Lazy<PlatformConfigurationRegistry<TextBlock>>(() => new PlatformConfigurationRegistry<TextBlock>(this));
 		}
 
 		public TextAlignment HorizontalTextAlignment
@@ -89,7 +94,7 @@ namespace Xamarin.Forms
 		}
 
 		double IFontElement.FontSizeDefaultValueCreator() =>
-			Device.GetNamedSize(NamedSize.Default, (Entry)this);
+			Device.GetNamedSize(NamedSize.Default, (TextBlock)this);
 
 		void IFontElement.OnFontAttributesChanged(FontAttributes oldValue, FontAttributes newValue) =>
 			InvalidateMeasureInternal(InvalidationTrigger.MeasureChanged);
@@ -113,14 +118,14 @@ namespace Xamarin.Forms
 			Completed?.Invoke(this, EventArgs.Empty);
 		}
 
-		static void OnTextChanged(BindableObject bindable, object oldValue, object newValue)
+		static void OnTextChanged(DependencyObject bindable, object oldValue, object newValue)
 		{
-			var entry = (Entry)bindable;
+			var entry = (TextBlock)bindable;
 
 			entry.TextChanged?.Invoke(entry, new TextChangedEventArgs((string)oldValue, (string)newValue));
 		}
 
-		public IPlatformElementConfiguration<T, Entry> On<T>() where T : IConfigPlatform
+		public IPlatformElementConfiguration<T, TextBlock> On<T>() where T : IConfigPlatform
 		{
 			return _platformConfigurationRegistry.Value.On<T>();
 		}

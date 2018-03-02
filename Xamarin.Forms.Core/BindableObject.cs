@@ -8,21 +8,37 @@ using Xamarin.Forms.Internals;
 
 namespace Xamarin.Forms
 {
-	public abstract class BindableObject : INotifyPropertyChanged, IDynamicResourceHandler
+	[Obsolete("Use DependencyObject")]
+	public abstract class BindableObject : DependencyObject { }
+
+	public abstract class DependencyObject : INotifyPropertyChanged, IDynamicResourceHandler
 	{
+		[Obsolete("Use DataContextProperty")]
 		public static readonly BindableProperty BindingContextProperty =
 			BindableProperty.Create("BindingContext", typeof(object), typeof(BindableObject), default(object),
-									BindingMode.OneWay, null, BindingContextPropertyChanged, null, null, BindingContextPropertyBindingChanging);
+									BindingMode.OneWay, null, DataContextPropertyChanged, null, null, BindingContextPropertyBindingChanging);
+
+		public static readonly BindableProperty DataContextProperty =
+		BindableProperty.Create("DataContext", typeof(object), typeof(DependencyObject), default(object),
+								BindingMode.OneWay, null, DataContextPropertyChanged, null, null, DataContextPropertyBindingChanging);
+
 
 		readonly List<BindablePropertyContext> _properties = new List<BindablePropertyContext>(4);
 
 		bool _applying;
 		object _inheritedContext;
 
+		[Obsolete("Use DataContextProperty")]
 		public object BindingContext
 		{
 			get { return _inheritedContext ?? GetValue(BindingContextProperty); }
 			set { SetValue(BindingContextProperty, value); }
+		}
+
+		public object DataContext
+		{
+			get { return _inheritedContext ?? GetValue(DataContextProperty); }
+			set { SetValue(DataContextProperty, value); }
 		}
 
 		void IDynamicResourceHandler.SetDynamicResource(BindableProperty property, string key)
@@ -439,8 +455,13 @@ namespace Xamarin.Forms
 				binding.Apply(BindingContext, this, context.Property, fromBindingContextChanged: fromBindingContextChanged);
 			}
 		}
-
 		static void BindingContextPropertyBindingChanging(BindableObject bindable, BindingBase oldBindingBase, BindingBase newBindingBase)
+		{
+			object context = bindable._inheritedContext;
+			bindable.SetValue(DataContextProperty, newBindingBase);
+		}
+
+		static void DataContextPropertyBindingChanging(BindableObject bindable, BindingBase oldBindingBase, BindingBase newBindingBase)
 		{
 			object context = bindable._inheritedContext;
 			var oldBinding = oldBindingBase as Binding;
@@ -452,10 +473,10 @@ namespace Xamarin.Forms
 				newBinding.Context = context;
 		}
 
-		static void BindingContextPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+		static void DataContextPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
 		{
 			bindable._inheritedContext = null;
-			bindable.ApplyBindings(skipBindingContext: true, fromBindingContextChanged:true);
+			bindable.ApplyBindings(skipBindingContext: true, fromBindingContextChanged: true);
 			bindable.OnBindingContextChanged();
 		}
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
 namespace Xamarin.Forms.Platform.UWP
@@ -18,8 +18,6 @@ namespace Xamarin.Forms.Platform.UWP
 
 		public ShellRenderer()
 		{
-			if (!Windows.Foundation.Metadata.ApiInformation.IsPropertyPresent("Windows.UI.Xaml.Controls.NavigationView", "PaneDisplayMode"))
-				throw new PlatformNotSupportedException("Windows 10 October 2018 (1809) update required");
 			IsBackEnabled = false;
 			IsBackButtonVisible = NavigationViewBackButtonVisible.Collapsed;
 			IsSettingsVisible = false;
@@ -172,14 +170,14 @@ namespace Xamarin.Forms.Platform.UWP
 
 		void UpdatePaneButtonColor(string name, bool overrideColor)
 		{
-			var toggleButton = GetTemplateChild(name) as Control;
+			var toggleButton = GetTemplateChild(name) as Windows.UI.Xaml.Controls.Control;
 			if (toggleButton != null)
 			{
 				var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
 				if (overrideColor)
 					toggleButton.Foreground = new SolidColorBrush(titleBar.ButtonForegroundColor.Value);
 				else
-					toggleButton.ClearValue(Control.ForegroundProperty);
+					toggleButton.ClearValue(Windows.UI.Xaml.Controls.Control.ForegroundProperty);
 			}
 		}
 

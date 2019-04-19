@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel;
-using Windows.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls;
 
 namespace Xamarin.Forms.Platform.UWP
 {
 	// Renders the actual page area where the contents gets rendered, as well as set of optional top-bar menu items and search box.
-	internal class ShellSectionRenderer : Windows.UI.Xaml.Controls.NavigationView, IAppearanceObserver
+	internal class ShellSectionRenderer : NavigationView, IAppearanceObserver
 	{
 		Windows.UI.Xaml.Controls.Frame Frame { get; }
 		Page Page;

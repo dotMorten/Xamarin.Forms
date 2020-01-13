@@ -182,7 +182,7 @@
   
   <!-- UWP Targets-->
   <Target Name="WinUICheckTargetPlatformVersion" BeforeTargets="PrepareForBuild"
-      Condition="'$(TargetPlatformVersion)' != '' and '$(TargetPlatformMinVersion)' != ''">
+      Condition="'$(TargetPlatformVersion)' != '' and '$(TargetPlatformMinVersion)' != '' and '$(OutputType)'=='AppContainerExe'">
     <PropertyGroup>
       <MicrosoftUIXamlTargetPlatformMinCheckValue>$([System.Version]::Parse('$(TargetPlatformMinVersion)').Build)</MicrosoftUIXamlTargetPlatformMinCheckValue>
     </PropertyGroup>
